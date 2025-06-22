@@ -1,0 +1,72 @@
+extends layout
+
+block content
+  .content-card.fade-in
+    .row.align-items-center.mb-5
+      .col-md-8
+        h1.display-4.mb-3
+          i.bi.bi-images.text-primary.me-3
+          = title
+        p.lead.text-muted Welcome to GalleryDB - Your comprehensive gallery management system
+      .col-md-4.text-center
+        i.bi.bi-collection.display-1.text-primary
+    
+    .row.mb-5
+      .col-12
+        h2.mb-4
+          i.bi.bi-gear.me-2
+          | Gallery Management System
+        p.lead This application allows you to manage users, galleries, and images with a modern, intuitive interface.
+    
+    .row
+      .col-md-4.mb-4
+        .card.h-100.border-0.shadow-sm
+          .card-body.text-center
+            i.bi.bi-people.display-4.text-primary.mb-3
+            h5.card-title User Management
+            p.card-text.text-muted Manage user accounts, permissions, and access control for your gallery system.
+            if loggedUser && loggedUser.username === 'admin'
+              a.btn.btn-primary(href="/users")
+                i.bi.bi-arrow-right.me-1
+                | Manage Users
+            else
+              span.badge.bg-secondary Admin Only
+    
+      .col-md-4.mb-4
+        .card.h-100.border-0.shadow-sm
+          .card-body.text-center
+            i.bi.bi-collection.display-4.text-success.mb-3
+            h5.card-title Gallery Management
+            p.card-text.text-muted Create, organize, and manage photo galleries with descriptions and metadata.
+            a.btn.btn-success(href="/galleries")
+              i.bi.bi-arrow-right.me-1
+              | Browse Galleries
+    
+      .col-md-4.mb-4
+        .card.h-100.border-0.shadow-sm
+          .card-body.text-center
+            i.bi.bi-images.display-4.text-info.mb-3
+            h5.card-title Image Management
+            p.card-text.text-muted Upload, organize, and manage images within your galleries with ease.
+            a.btn.btn-info(href="/images")
+              i.bi.bi-arrow-right.me-1
+              | View Images
+    
+    if loggedUser
+      .row.mt-5
+        .col-12
+          .alert.alert-info
+            h5
+              i.bi.bi-person-circle.me-2
+              | Welcome back, #{loggedUser.name} #{loggedUser.surname}!
+            p.mb-0 Use the sidebar navigation to explore different sections and manage your content.
+    else
+      .row.mt-5
+        .col-12
+          .alert.alert-warning
+            h5
+              i.bi.bi-exclamation-triangle.me-2
+              | Please log in to access all features
+            p.mb-0 
+              a.alert-link(href="/users/login") Click here to log in
+              |  and start managing your galleries and images.

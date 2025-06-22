@@ -1,0 +1,33 @@
+[{
+  "_id": {
+    "$oid": "665f1c1c1c1c1c1c1c1c1c01"
+  },
+  "name": "Beach Sunset",
+  "description": "Sunset over the Mediterranean Sea",
+  "path": "/images/summer/beach_sunset.jpg",
+  "gallery": {
+    "$oid": "665f1a1a1a1a1a1a1a1a1a01"
+  }
+},
+{
+  "_id": {
+    "$oid": "665f1c1c1c1c1c1c1c1c1c02"
+  },
+  "name": "Snowy Mountains",
+  "description": "A view of snow-covered peaks",
+  "path": "/images/winter/mountains.jpg",
+  "gallery": {
+    "$oid": "665f1a1a1a1a1a1a1a1a1a02"
+  }
+},
+{
+  "_id": {
+    "$oid": "665f1c1c1c1c1c1c1c1c1c03"
+  },
+  "name": "Busy Street",
+  "description": "Night lights and traffic in Tokyo",
+  "path": "/images/city/busy_street.jpg",
+  "gallery": {
+    "$oid": "665f1a1a1a1a1a1a1a1a1a03"
+  }
+}]

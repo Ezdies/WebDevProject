@@ -1,0 +1,56 @@
+extends layout
+
+block content
+  .content-card.fade-in
+    .row.align-items-center.mb-4
+      .col-md-8
+        h1.mb-0
+          i.bi.bi-collection.me-2
+          = title
+      .col-md-4.text-end
+        if loggedUser
+          a.btn.btn-primary(href="/galleries/gallery_add")
+            i.bi.bi-plus-circle.me-2
+            | Add New Gallery
+    
+    if gallery_list && gallery_list.length > 0
+      .row
+        each gallery in gallery_list
+          .col-md-6.col-lg-4.mb-4
+            .card.h-100.border-0.shadow-sm
+              .card-body
+                h5.card-title
+                  i.bi.bi-collection.me-2
+                  = gallery.name
+                if gallery.description
+                  p.card-text.text-muted= gallery.description
+                else
+                  p.card-text.text-muted
+                    em No description available
+                
+                .card-text.small.text-muted
+                  if gallery.user
+                    p.mb-1
+                      i.bi.bi-person.me-1
+                      | Owner: #{gallery.user.name} #{gallery.user.surname}
+                  p.mb-3
+                    i.bi.bi-calendar.me-1
+                    | Created: #{gallery.date.toLocaleDateString()}
+                
+                .d-grid.gap-2
+                  a.btn.btn-outline-primary.btn-sm(href=`/galleries/gallery_browse?gallery=${gallery._id}`)
+                    i.bi.bi-eye.me-1
+                    | Browse Gallery
+                  if loggedUser && (loggedUser.username === 'admin' || (gallery.user && gallery.user._id.toString() === loggedUser._id.toString()))
+                    a.btn.btn-outline-warning.btn-sm(href=`/galleries/gallery_update?id=${gallery._id}`)
+                      i.bi.bi-pencil.me-1
+                      | Edit Gallery
+    else
+      .text-center.py-5
+        i.bi.bi-collection.display-1.text-muted.mb-3
+        h4.text-muted No galleries found
+        if loggedUser
+          p.mt-3
+            a.btn.btn-primary(href="/galleries/gallery_add")
+              i.bi.bi-plus-circle.me-2
+              | Create your first gallery 

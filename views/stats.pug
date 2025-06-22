@@ -1,0 +1,98 @@
+extends layout
+
+block content
+  .content-card.fade-in
+    h1.mb-4
+      i.bi.bi-graph-up.me-2
+      = title
+    
+    // Statistics Cards
+    .row.mb-5
+      .col-md-4.mb-3
+        .card.border-0.shadow-sm.text-center
+          .card-body
+            i.bi.bi-people.display-4.text-primary.mb-3
+            h2.card-title.text-primary= userCount
+            p.card-text.text-muted Total Users
+    
+      .col-md-4.mb-3
+        .card.border-0.shadow-sm.text-center
+          .card-body
+            i.bi.bi-collection.display-4.text-success.mb-3
+            h2.card-title.text-success= galleryCount
+            p.card-text.text-muted Total Galleries
+    
+      .col-md-4.mb-3
+        .card.border-0.shadow-sm.text-center
+          .card-body
+            i.bi.bi-images.display-4.text-info.mb-3
+            h2.card-title.text-info= imageCount
+            p.card-text.text-muted Total Images
+    
+    // Recent Activity
+    .row
+      .col-md-6.mb-4
+        .card.border-0.shadow-sm
+          .card-header.bg-primary.text-white
+            h5.mb-0
+              i.bi.bi-collection.me-2
+              | Recent Galleries
+          .card-body
+            if recentGalleries && recentGalleries.length > 0
+              .list-group.list-group-flush
+                each gallery in recentGalleries
+                  .list-group-item.d-flex.justify-content-between.align-items-center
+                    div
+                      h6.mb-1= gallery.name
+                      if gallery.user
+                        small.text-muted= "Owner: " + gallery.user.name + " " + gallery.user.surname
+                    small.text-muted= gallery.date.toLocaleDateString()
+            else
+              p.text-muted.text-center.mb-0 No galleries found
+    
+      .col-md-6.mb-4
+        .card.border-0.shadow-sm
+          .card-header.bg-success.text-white
+            h5.mb-0
+              i.bi.bi-images.me-2
+              | Recent Images
+          .card-body
+            if recentImages && recentImages.length > 0
+              .list-group.list-group-flush
+                each image in recentImages
+                  .list-group-item.d-flex.justify-content-between.align-items-center
+                    div
+                      h6.mb-1= image.name
+                      if image.gallery
+                        small.text-muted= "Gallery: " + image.gallery.name
+                    small.text-muted= image.uploadDate.toLocaleDateString()
+            else
+              p.text-muted.text-center.mb-0 No images found
+    
+    // Quick Actions
+    .row.mt-4
+      .col-12
+        .card.border-0.shadow-sm
+          .card-header.bg-info.text-white
+            h5.mb-0
+              i.bi.bi-lightning.me-2
+              | Quick Actions
+          .card-body
+            .row
+              .col-md-3.mb-2
+                a.btn.btn-outline-primary.w-100(href="/galleries")
+                  i.bi.bi-collection.me-2
+                  | Browse Galleries
+              .col-md-3.mb-2
+                a.btn.btn-outline-success.w-100(href="/images")
+                  i.bi.bi-images.me-2
+                  | View Images
+              if loggedUser
+                .col-md-3.mb-2
+                  a.btn.btn-outline-warning.w-100(href="/galleries/gallery_add")
+                    i.bi.bi-plus-circle.me-2
+                    | Add Gallery
+                .col-md-3.mb-2
+                  a.btn.btn-outline-info.w-100(href="/images/image_add")
+                    i.bi.bi-upload.me-2
+                    | Upload Image 

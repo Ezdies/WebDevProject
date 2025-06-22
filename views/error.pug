@@ -1,0 +1,20 @@
+extends layout
+
+block content
+  .content-card.fade-in
+    .text-center.py-5
+      i.bi.bi-exclamation-triangle.display-1.text-danger.mb-4
+      h1.text-danger.mb-3= message
+      h2.text-muted.mb-4= error.status
+      
+      .alert.alert-danger.text-start
+        h5.mb-3 Error Details:
+        pre.mb-0.small= error.stack
+      
+      .mt-4
+        a.btn.btn-primary(href="/")
+          i.bi.bi-house.me-2
+          | Go Home
+        a.btn.btn-outline-secondary.ms-2(href="javascript:history.back()")
+          i.bi.bi-arrow-left.me-2
+          | Go Back

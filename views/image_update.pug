@@ -1,0 +1,80 @@
+extends layout
+
+block content
+  h1= title
+  
+  .form-container
+    if success
+      .alert.alert-success= success
+    
+    if errors && errors.length > 0
+      .alert.alert-error
+        h4 Please correct the following errors:
+        ul
+          each error in errors
+            li= error.msg
+    
+    form(method="POST" action="")
+      input(type="hidden" name="imageId" value=image._id)
+      
+      .form-group
+        label(for="name") Image Name:
+        input#name(
+          type="text" 
+          name="name" 
+          value=image.name || "" 
+          placeholder="Enter image name (1-200 characters)"
+          required
+        )
+        .help-text
+          strong Requirements:
+          ul
+            li 1-200 characters long
+            li Cannot be empty
+            li Must be unique within the selected gallery
+        if errors && errors.find(e => e.param === 'name')
+          .error-message= errors.find(e => e.param === 'name').msg
+      
+      .form-group
+        label(for="description") Description:
+        textarea#description(
+          name="description" 
+          placeholder="Enter image description (optional, max 500 characters)"
+          rows="4"
+        )= image.description || ""
+        .help-text
+          strong Requirements:
+          ul
+            li Maximum 500 characters
+            li Optional field
+        if errors && errors.find(e => e.param === 'description')
+          .error-message= errors.find(e => e.param === 'description').msg
+      
+      .form-group
+        label(for="gallery") Gallery:
+        select#gallery(name="gallery" required)
+          option(value="") -- Select a gallery --
+          each gallery in galleries
+            option(
+              value=gallery._id 
+              selected=(image.gallery && image.gallery._id.toString() === gallery._id.toString())
+            )= gallery.name + (gallery.user ? " (Owner: " + gallery.user.name + " " + gallery.user.surname + ")" : "")
+        .help-text
+          strong Requirements:
+          ul
+            li Must select a gallery from the list
+            li You can only move images to your own galleries
+            li Admin can move images to any gallery
+        if errors && errors.find(e => e.param === 'gallery')
+          .error-message= errors.find(e => e.param === 'gallery').msg
+      
+      .form-group
+        label Current Image:
+        .current-image
+          img(src=image.path, alt=image.name, style="max-width: 200px; height: auto; border-radius: 5px;")
+          p
+            small= "Current file: " + image.path
+      
+      .form-actions
+        button.btn.btn-update(type="submit") Update Image
+        a.btn.btn-cancel(href=`/galleries/gallery_browse?gallery=${image.gallery._id}`) Cancel 

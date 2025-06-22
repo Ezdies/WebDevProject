@@ -1,0 +1,57 @@
+extends layout
+
+block content
+  .content-card.fade-in
+    .row.justify-content-center
+      .col-md-6.col-lg-4
+        .text-center.mb-4
+          i.bi.bi-person-circle.display-1.text-primary.mb-3
+          h1.mb-3= title
+          p.text-muted Welcome back! Please sign in to your account.
+        
+        .form-container
+          if success
+            .alert.alert-success
+              i.bi.bi-check-circle.me-2
+              = success
+          
+          if errors && errors.length > 0
+            .alert.alert-error
+              h4
+                i.bi.bi-exclamation-triangle.me-2
+                | Please correct the following errors:
+              ul
+                each error in errors
+                  li= error.msg
+          
+          form(method="POST" action="")
+            .form-group
+              label.form-label(for="username")
+                i.bi.bi-person.me-1
+                | Username:
+              input#username.form-control(
+                type="text" 
+                name="username" 
+                placeholder="Enter your username"
+                required
+              )
+              if errors && errors.find(e => e.param === 'username')
+                .error-message= errors.find(e => e.param === 'username').msg
+            
+            .form-group
+              label.form-label(for="password")
+                i.bi.bi-lock.me-1
+                | Password:
+              input#password.form-control(
+                type="password" 
+                name="password" 
+                placeholder="Enter your password"
+                required
+              )
+              if errors && errors.find(e => e.param === 'password')
+                .error-message= errors.find(e => e.param === 'password').msg
+            
+            .d-grid.gap-2.mt-4
+              button.btn.btn-primary.btn-lg(type="submit")
+                i.bi.bi-box-arrow-in-right.me-2
+                | Sign In 

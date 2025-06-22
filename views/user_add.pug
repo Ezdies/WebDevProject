@@ -1,0 +1,86 @@
+extends layout
+
+block content
+  h1= title
+  
+  .form-container
+    if success
+      .alert.alert-success= success
+    
+    if errors && errors.length > 0
+      .alert.alert-error
+        h4 Please correct the following errors:
+        ul
+          each error in errors
+            li= error.msg
+    
+    form(method="POST" action="")
+      .form-group
+        label(for="username") Username:
+        input#username(
+          type="text" 
+          name="username" 
+          value=user.username || "" 
+          placeholder="Enter username (3-50 characters, letters, numbers, underscores only)"
+          required
+        )
+        .help-text
+          strong Requirements:
+          ul
+            li 3-50 characters long
+            li Only letters (a-z, A-Z), numbers (0-9), and underscores (_)
+            li Must be unique in the database
+        if errors && errors.find(e => e.param === 'username')
+          .error-message= errors.find(e => e.param === 'username').msg
+      
+      .form-group
+        label(for="name") Name:
+        input#name(
+          type="text" 
+          name="name" 
+          value=user.name || "" 
+          placeholder="Enter full name (1-100 characters)"
+          required
+        )
+        .help-text
+          strong Requirements:
+          ul
+            li 1-100 characters long
+            li Cannot be empty
+        if errors && errors.find(e => e.param === 'name')
+          .error-message= errors.find(e => e.param === 'name').msg
+      
+      .form-group
+        label(for="surname") Surname:
+        input#surname(
+          type="text" 
+          name="surname" 
+          value=user.surname || "" 
+          placeholder="Enter surname (1-100 characters)"
+          required
+        )
+        .help-text
+          strong Requirements:
+          ul
+            li 1-100 characters long
+            li Cannot be empty
+        if errors && errors.find(e => e.param === 'surname')
+          .error-message= errors.find(e => e.param === 'surname').msg
+      
+      .form-group
+        label(for="password") Password:
+        input#password(
+          type="password" 
+          name="password" 
+          placeholder="Enter password (minimum 6 characters)"
+          required
+        )
+        .help-text
+          strong Requirements:
+          ul
+            li Minimum 6 characters long
+            li Will be encrypted before storage
+        if errors && errors.find(e => e.param === 'password')
+          .error-message= errors.find(e => e.param === 'password').msg
+      
+      button.btn(type="submit") Add User 

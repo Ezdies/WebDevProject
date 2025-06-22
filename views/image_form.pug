@@ -1,0 +1,107 @@
+extends layout
+
+block content
+  .content-card.fade-in
+    h1.mb-4
+      i.bi.bi-upload.me-2
+      = title
+    
+    .form-container
+      if success
+        .alert.alert-success
+          i.bi.bi-check-circle.me-2
+          = success
+      
+      if errors && errors.length > 0
+        .alert.alert-error
+          h4
+            i.bi.bi-exclamation-triangle.me-2
+            | Please correct the following errors:
+          ul
+            each error in errors
+              li= error.msg
+      
+      form(method="POST" action="" enctype="multipart/form-data")
+        .row
+          .col-md-6
+            .form-group
+              label.form-label(for="name")
+                i.bi.bi-tag.me-1
+                | Image Name:
+              input#name.form-control(
+                type="text" 
+                name="name" 
+                value=image.name || "" 
+                placeholder="Enter image name (1-200 characters)"
+                required
+              )
+              .help-text
+                strong Requirements:
+                ul
+                  li 1-200 characters long
+                  li Cannot be empty
+                  li Must be unique within the selected gallery
+              if errors && errors.find(e => e.param === 'name')
+                .error-message= errors.find(e => e.param === 'name').msg
+            
+            .form-group
+              label.form-label(for="description")
+                i.bi.bi-text-paragraph.me-1
+                | Description:
+              textarea#description.form-control(
+                name="description" 
+                placeholder="Enter image description (optional, max 500 characters)"
+                rows="4"
+              )= image.description || ""
+              .help-text
+                strong Requirements:
+                ul
+                  li Maximum 500 characters
+                  li Optional field
+              if errors && errors.find(e => e.param === 'description')
+                .error-message= errors.find(e => e.param === 'description').msg
+          
+          .col-md-6
+            .form-group
+              label.form-label(for="imageFile")
+                i.bi.bi-image.me-1
+                | Image File:
+              input#imageFile.form-control(
+                type="file" 
+                name="imageFile" 
+                accept="image/*"
+                required
+              )
+              .help-text
+                strong Requirements:
+                ul
+                  li Must be an image file (JPEG, PNG, GIF, etc.)
+                  li Maximum file size: 10MB
+                  li File will be automatically saved to the server
+              if errors && errors.find(e => e.param === 'imageFile')
+                .error-message= errors.find(e => e.param === 'imageFile').msg
+            
+            .form-group
+              label.form-label(for="gallery")
+                i.bi.bi-collection.me-1
+                | Gallery:
+              select#gallery.form-select(name="gallery" required)
+                option(value="") -- Select a gallery --
+                each gallery in galleries
+                  option(
+                    value=gallery._id 
+                    selected=(image.gallery && image.gallery.toString() === gallery._id.toString())
+                  )= gallery.name + (gallery.user ? " (Owner: " + gallery.user.name + " " + gallery.user.surname + ")" : "")
+              .help-text
+                strong Requirements:
+                ul
+                  li Must select a gallery from the list
+                  li You can only add images to your own galleries
+                  li Admin can add images to any gallery
+              if errors && errors.find(e => e.param === 'gallery')
+                .error-message= errors.find(e => e.param === 'gallery').msg
+        
+        .form-actions.text-center.mt-4
+          button.btn.btn-primary.btn-lg(type="submit")
+            i.bi.bi-upload.me-2
+            | Upload Image 

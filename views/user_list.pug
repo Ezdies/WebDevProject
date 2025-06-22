@@ -1,0 +1,43 @@
+extends layout
+
+block content
+  .content-card.fade-in
+    .row.align-items-center.mb-4
+      .col-md-8
+        h1.mb-0
+          i.bi.bi-people.me-2
+          = title
+      .col-md-4.text-end
+        if loggedUser && loggedUser.username === 'admin'
+          a.btn.btn-primary(href="/users/user_add")
+            i.bi.bi-person-plus.me-2
+            | Add New User
+    
+    if user_list && user_list.length > 0
+      .row
+        each user in user_list
+          .col-md-6.col-lg-4.mb-4
+            .card.h-100.border-0.shadow-sm
+              .card-body.text-center
+                i.bi.bi-person-circle.display-4.text-primary.mb-3
+                h5.card-title= user.username
+                p.card-text.text-muted= user.name + " " + user.surname
+                if user.username === 'admin'
+                  span.badge.bg-danger.mb-2 Administrator
+                else
+                  span.badge.bg-secondary.mb-2 User
+                
+                .d-grid.gap-2
+                  if loggedUser && loggedUser.username === 'admin' && user.username !== 'admin'
+                    a.btn.btn-outline-warning.btn-sm(href=`/users/user_update?id=${user._id}`)
+                      i.bi.bi-pencil.me-1
+                      | Edit User
+    else
+      .text-center.py-5
+        i.bi.bi-people.display-1.text-muted.mb-3
+        h4.text-muted No users found
+        if loggedUser && loggedUser.username === 'admin'
+          p.mt-3
+            a.btn.btn-primary(href="/users/user_add")
+              i.bi.bi-person-plus.me-2
+              | Add your first user

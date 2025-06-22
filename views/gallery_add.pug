@@ -1,0 +1,102 @@
+extends layout
+
+block content
+  .content-card.fade-in
+    h1.mb-4
+      i.bi.bi-plus-circle.me-2
+      = title
+    
+    .form-container
+      if success
+        .alert.alert-success
+          i.bi.bi-check-circle.me-2
+          = success
+      
+      if errors && errors.length > 0
+        .alert.alert-error
+          h4
+            i.bi.bi-exclamation-triangle.me-2
+            | Please correct the following errors:
+          ul
+            each error in errors
+              li= error.msg
+      
+      form(method="POST" action="")
+        .row
+          .col-md-8
+            .form-group
+              label.form-label(for="name")
+                i.bi.bi-collection.me-1
+                | Gallery Name:
+              input#name.form-control(
+                type="text" 
+                name="name" 
+                value=gallery.name || "" 
+                placeholder="Enter gallery name (1-200 characters)"
+                required
+              )
+              .help-text
+                strong Requirements:
+                ul
+                  li 1-200 characters long
+                  li Cannot be empty
+                  li Must be unique for each user
+              if errors && errors.find(e => e.param === 'name')
+                .error-message= errors.find(e => e.param === 'name').msg
+            
+            .form-group
+              label.form-label(for="description")
+                i.bi.bi-text-paragraph.me-1
+                | Description:
+              textarea#description.form-control(
+                name="description" 
+                placeholder="Enter gallery description (optional, max 500 characters)"
+                rows="4"
+              )= gallery.description || ""
+              .help-text
+                strong Requirements:
+                ul
+                  li Maximum 500 characters
+                  li Optional field
+              if errors && errors.find(e => e.param === 'description')
+                .error-message= errors.find(e => e.param === 'description').msg
+          
+          .col-md-4
+            if currentUser && currentUser.username === 'admin'
+              .form-group
+                label.form-label(for="user")
+                  i.bi.bi-person.me-1
+                  | Gallery Owner:
+                select#user.form-select(name="user")
+                  option(value="") -- Select a user --
+                  each user in users
+                    option(
+                      value=user._id 
+                      selected=(gallery.user && gallery.user.toString() === user._id.toString())
+                    )= user.name + " " + user.surname + " (" + user.username + ")"
+                .help-text
+                  strong Requirements:
+                  ul
+                    li Must select a user from the list
+                    li User must exist in the database
+                if errors && errors.find(e => e.param === 'user')
+                  .error-message= errors.find(e => e.param === 'user').msg
+            else
+              .form-group
+                label.form-label
+                  i.bi.bi-person.me-1
+                  | Gallery Owner:
+                input.form-control(
+                  type="text" 
+                  value=currentUser.name + " " + currentUser.surname + " (" + currentUser.username + ")"
+                  disabled
+                )
+                .help-text
+                  strong Info:
+                  ul
+                    li Gallery will be assigned to your account
+        
+        .form-actions.text-center.mt-4
+          button.btn.btn-primary.btn-lg(type="submit")
+            i.bi.bi-plus-circle.me-2
+            | Add Gallery 
