@@ -116,10 +116,6 @@ temp/
 ehthumbs.db
 Thumbs.db
 
-# Application specific
-# Uploaded images (keep the directory structure but ignore actual images)
-public/images/*
-!public/images/.gitkeep
 
 # Database files (if using local file-based database)
 *.db
